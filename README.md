@@ -1,0 +1,4 @@
+nfbApp
+======
+
+Experimental neurofeedback application

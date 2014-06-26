@@ -148,7 +148,7 @@ int main(int argc, char **argv)
     // Load old configurations for elements.
     config.load();
 
-    playerLog("Initializing complete..\n");
+    playerLog("Initialization complete..\n");
 
     // Show elements info just for fun .. before it was to see z-ordering. :)
     elementList.showElementsInfo();

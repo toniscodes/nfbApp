@@ -178,6 +178,10 @@ int main(int argc, char **argv)
     // Do autoloading If session was interrupted.
     autoLoadSession();
 
+    // Initialize devices as we now know the ports after loading configuration.
+    openEEGDevice.init();
+    mindWaveDevice.init();
+
     /* * * * * * * * * *
     * Program Main Loop *
     * * * * * * * * * */

@@ -7,7 +7,7 @@ OpenEEGDevice::OpenEEGDevice()
 {
     //ctor
     thread = NULL;
-    init();
+    //init();
 }
 
 OpenEEGDevice::~OpenEEGDevice()
@@ -286,6 +286,7 @@ void OpenEEGDevice::init()
     if (h == INVALID_HANDLE_VALUE) {
         playerLog("OpenEEG wasn't found on port " + intToStr(openEEGPort));
     } else {
+        playerLog("OpenEEG is using port " + intToStr(openEEGPort));
         thread   = al_create_thread(Serial_Thread_Func, h);
         al_start_thread(thread);
     }

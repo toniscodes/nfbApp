@@ -3975,7 +3975,7 @@
 1403657506 source:c:\users\tonistudent\desktop\nfb-experiment\core\src\mindwavedevice.cpp
 	"../include/MindWaveDevice.h"
 
-1403564759 source:c:\users\tonis_000\documents\github\nfbapp\core\main.cpp
+1404008002 source:c:\users\tonis_000\documents\github\nfbapp\core\main.cpp
 	<fstream>
 	<sstream>
 	<stdio.h>
@@ -7631,10 +7631,10 @@
 	"../include/ImageLibrary.h"
 	"../include/PlayerCommon.h"
 
-1403657506 source:c:\users\tonis_000\documents\github\nfbapp\core\src\mindwavedevice.cpp
+1404008018 source:c:\users\tonis_000\documents\github\nfbapp\core\src\mindwavedevice.cpp
 	"../include/MindWaveDevice.h"
 
-1403633879 source:c:\users\tonis_000\documents\github\nfbapp\core\src\openeegdevice.cpp
+1404008047 source:c:\users\tonis_000\documents\github\nfbapp\core\src\openeegdevice.cpp
 	"../include/OpenEEGDevice.h"
 	"../include/Serialport.h"
 

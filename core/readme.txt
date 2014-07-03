@@ -30,6 +30,9 @@ If app tells that open eeg device doesn't give packets and you have to restart:
 -audiere lib
 -fftw lib
 
+#Desired coming features:
+-Mapping for profile's repeated sessions for progress monitoring.
+
 Feel free to use the app for any purpose.
 
 Tonis 2014

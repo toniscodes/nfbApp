@@ -7573,7 +7573,7 @@
 	"../../include/GUI/GUIMouse.h"
 	"../../include/PlayerCommon.h"
 
-1403632716 source:c:\users\tonis_000\documents\github\nfbapp\core\src\gui\guinfbpanel.cpp
+1404361093 source:c:\users\tonis_000\documents\github\nfbapp\core\src\gui\guinfbpanel.cpp
 	<string>
 	<allegro5/allegro.h>
 	<allegro5/allegro_font.h>

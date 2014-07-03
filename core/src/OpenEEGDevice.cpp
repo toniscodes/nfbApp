@@ -223,7 +223,8 @@ void OpenEEGDevice::init()
     rawSampleSize           = 256;
     sampleRate              = 256;
     lastPacketsReceivedTime = 0;
-    maxAmplitude            = 20000;
+    //maxAmplitude            = 20000;
+    maxAmplitude            = 2000;
 
     // Which channels are used by this EEG-Device?
     for (int i=0;i<AMOUNT_OF_CHANNELS;i++)

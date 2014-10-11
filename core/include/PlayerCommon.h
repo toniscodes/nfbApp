@@ -6,6 +6,7 @@
 #include <audiere.h>
 #include "Config.h"
 #include "BWManager.h"
+#include "BWStatsView.h"
 #include "BWMeter.h"
 #include "MindWaveDevice.h"
 #include "OpenEEGDevice.h"
@@ -75,6 +76,9 @@ extern Session session;
 
 //! Set up Brainwave Manager
 extern BWManager bwManager;
+
+//! Set up statistical view.
+extern BWStatsView bwStatsView;
 
 //! Variable to tell which control panel is visible.(standard playmode-panel, djmode panel, settings panel).
 extern int controlPanelMode;
@@ -249,6 +253,7 @@ extern GUIButton recordPauseButton;
 extern GUIButton restartButton;
 
 //! These are the three big page-options to choose [Record(normal play)][NFBPanel][Configurations]
+extern GUIButton StatisticModeButton;
 extern GUIButton RecordModeButton;
 extern GUIButton NFBConfigureButton;
 extern GUIButton ConfigureButton;
@@ -282,6 +287,13 @@ extern GUIRadioButton EEGDeviceModeRadioButton;
 extern GUICheckBox    EEGDevicegOp1;
 extern GUICheckBox    EEGDevicegOp2;
 extern GUICheckBox    EEGDevicegOp3;
+
+//! Resultmode options.
+extern GUIButton renderStatisticButton;
+extern GUIRadioButton resultModeRadioButton;
+extern GUICheckBox    resultModeRadioButtonOp1;
+extern GUICheckBox    resultModeRadioButtonOp2;
+
 
 //! Visualization mode. There are some fun things in these. Whether o show it with the GUI usual elements or not. I don't remember anymore how did this work.
 extern bool onTopVisualization;

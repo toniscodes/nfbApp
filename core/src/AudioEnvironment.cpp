@@ -44,7 +44,7 @@ void AudioEnvironment::init() {
     // System sounds.
     systemNotification.loadSample("media/sfx/system/systemNotification.mp3",1.0f);
     calibrationSound.loadSample("media/sfx/system/calibration.mp3",1.0f);
-    //calibrationSound.loadSample("media/sfx/system/systemNotification.mp3",1.0f);
+    //calibrationSound.loadSample("media/sfx/system/systemNotification.mp3",1.0f); // For debuggin.
     eegErrorSound.loadSample("media/sfx/system/eegError.mp3",1.0f);
 
     // *********************************
@@ -54,30 +54,24 @@ void AudioEnvironment::init() {
     // Alpha channel is played along with gamma-channel to make some background mask.
     specificPrizeAudioFileName[CHANNEL_GAMMA] = "tibetan_prayer_ball_low";
     // Level one
-    //audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_1][CHANNEL_THETA].loadSample("media/sfx/level1/oceanwaves.wav",0.0f);
-    audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_1][CHANNEL_ALPHA].loadSample("media/sfx/level1/oceanwaves.wav",0.5f);
+    audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_1][CHANNEL_ALPHA].loadSample("media/sfx/level1/cave.wav",0.5f);
     audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_1][CHANNEL_GAMMA].loadSample("media/sfx/waves/monaural200hz_25ms.wav",0.15f);
 
     // Rain level
-    //audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_2][CHANNEL_THETA].loadSample("media/sfx/level1/river.mp3",0.0f);
-    audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_2][CHANNEL_ALPHA].loadSample("media/sfx/level1/river.mp3",0.5f);
+    audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_2][CHANNEL_ALPHA].loadSample("media/sfx/level2/oceanwaves.wav",0.5f);
     audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_2][CHANNEL_GAMMA].loadSample("media/sfx/waves/monaural200hz_25ms.wav",0.15f);
 
     // Monks level
-    //audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_3][CHANNEL_THETA].loadSample("media/sfx/level4/fountain.mp3",0.0f);
-    audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_3][CHANNEL_ALPHA].loadSample("media/sfx/level4/fountain.mp3",0.5f);
+    audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_3][CHANNEL_ALPHA].loadSample("media/sfx/level5/fountain.mp3",0.5f);
     audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_3][CHANNEL_GAMMA].loadSample("media/sfx/waves/monaural200hz_25ms.wav",0.2f);
 
     // Fountain level
-    //audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_4][CHANNEL_THETA].loadSample("media/sfx/level5/forestspringbirds.wav",0.0f);
-    audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_4][CHANNEL_ALPHA].loadSample("media/sfx/level5/forestspringbirds.wav",0.5f);
+    audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_4][CHANNEL_ALPHA].loadSample("media/sfx/level1/Rainforest dense rain.wav",0.5f);
     audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_4][CHANNEL_GAMMA].loadSample("media/sfx/waves/monaural200hz_25ms.wav",0.15f);
 
     // Windbells
-    //audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_5][CHANNEL_THETA].loadSample("media/sfx/level3/windbells.mp3",0.0f);
-    audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_5][CHANNEL_ALPHA].loadSample("media/sfx/level3/windbells.mp3",0.5f);
+    audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_5][CHANNEL_ALPHA].loadSample("media/sfx/level4/windbells.mp3",0.5f);
     audioChannel[GAMMA_MEDITATION_TRAINING][LEVEL_5][CHANNEL_GAMMA].loadSample("media/sfx/waves/monaural200hz_25ms.wav",0.15f);
-    //audioChannel[MEDITATION_TRAINING][LEVEL_5][CHANNEL_GAMMA].loadSample("media/sfx/windbells/ritualdrumsdistant.mp3",0.3f);
 
 
     // *********************************
@@ -90,31 +84,35 @@ void AudioEnvironment::init() {
     specificPrizeAudioFileName[CHANNEL_ALPHA] = "tibetan_prayer_ball_high";
     specificPrizeAudioFileName[CHANNEL_THETA] = "tibetan_prayer_ball_low";
 
-    // Level one ocean waves and river
+    // Level 1 .
     audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_1][CHANNEL_THETA].loadBinauralBeat(binauralCarrierFreq, binauralFreq, binauralVolume);
-    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_1][CHANNEL_ALPHA].loadSample("media/sfx/level1/river.mp3",1.0f);
-    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_1][CHANNEL_GAMMA].loadSample("media/sfx/level1/oceanwaves.wav",1.0f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_1][CHANNEL_ALPHA].loadSample("media/sfx/level1/Rainforest dense rain.wav",1.0f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_1][CHANNEL_GAMMA].loadSample("media/sfx/level1/cave.wav",1.0f);
 
-    // Level two
+    // 2 ..
     audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_2][CHANNEL_THETA].loadBinauralBeat(binauralCarrierFreq, binauralFreq, binauralVolume);
-    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_2][CHANNEL_ALPHA].loadSample("media/sfx/level2/rain.mp3",1.0f);
-    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_2][CHANNEL_GAMMA].loadSample("media/sfx/level2/tibetan_singing_bowls.mp3",0.8f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_2][CHANNEL_ALPHA].loadSample("media/sfx/level2/river.mp3",1.0f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_2][CHANNEL_GAMMA].loadSample("media/sfx/level2/oceanwaves.wav",1.0f);
 
-    // Monks level
+    // 3 ...
     audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_3][CHANNEL_THETA].loadBinauralBeat(binauralCarrierFreq, binauralFreq, binauralVolume);
-    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_3][CHANNEL_ALPHA].loadSample("media/sfx/level3/windbells.mp3",1.0f);
-    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_3][CHANNEL_GAMMA].loadSample("media/sfx/level3/resonance_of_the_gods.mp3",0.8f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_3][CHANNEL_ALPHA].loadSample("media/sfx/level3/rain.mp3",1.0f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_3][CHANNEL_GAMMA].loadSample("media/sfx/level3/tibetan_singing_bowls.mp3",0.8f);
 
-    // Fountain level
+    // 4 ...
     audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_4][CHANNEL_THETA].loadBinauralBeat(binauralCarrierFreq, binauralFreq, binauralVolume);
-    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_4][CHANNEL_ALPHA].loadSample("media/sfx/level4/fountain.mp3",0.8f);
-    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_4][CHANNEL_GAMMA].loadSample("media/sfx/level4/monks.mp3",1.0f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_4][CHANNEL_ALPHA].loadSample("media/sfx/level4/windbells.mp3",1.0f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_4][CHANNEL_GAMMA].loadSample("media/sfx/level4/resonance_of_the_gods.mp3",0.8f);
 
-    // Windbells
+    // 5 ..
     audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_5][CHANNEL_THETA].loadBinauralBeat(binauralCarrierFreq, binauralFreq, binauralVolume);
-    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_5][CHANNEL_ALPHA].loadSample("media/sfx/level5/forestspringbirds.wav",0.7f);
-    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_5][CHANNEL_GAMMA].loadSample("media/sfx/level5/singingbowls.mp3",0.7f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_5][CHANNEL_ALPHA].loadSample("media/sfx/level5/fountain.mp3",0.8f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_5][CHANNEL_GAMMA].loadSample("media/sfx/level5/monks.mp3",1.0f);
 
+    // 6 .
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_6][CHANNEL_THETA].loadBinauralBeat(binauralCarrierFreq, binauralFreq, binauralVolume);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_6][CHANNEL_ALPHA].loadSample("media/sfx/level6/forestspringbirds.wav",0.7f);
+    audioChannel[THETA_ALPHA_MEDITATION_TRAINING][LEVEL_6][CHANNEL_GAMMA].loadSample("media/sfx/level6/singingbowls.mp3",0.7f);
 
     // Initialize prize audio.
     playerLog("Initializing prize audio..");

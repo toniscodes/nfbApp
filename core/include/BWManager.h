@@ -14,6 +14,17 @@
 #ifndef BWMANAGER_H
 #define BWMANAGER_H
 
+// These are used for getting values to basic graph
+enum GRAPH_PHASES {  START_PHASE,
+                       MIDDLE_PHASE,
+                       END_PHASE,
+                       AVG_PHASE,
+                    AMOUNT_OF_PHASES
+                  }; // Notice that the last one tells the amount of these things..
+
+enum STAT_MODES { STAT_POWER,
+                    STAT_RELATIVE,
+                   AMOUNT_OF_STAT_MODES};
 
 using namespace std;
 //using namespace plrCommon;
@@ -33,6 +44,7 @@ public:
     BWManager(string s, int posX, int posY, int width, int height, string toolTipText);
     virtual ~BWManager();
     BWGraph channel[AMOUNT_OF_CHANNELS];
+    double channelStats[AMOUNT_OF_STAT_MODES][AMOUNT_OF_CHANNELS][AMOUNT_OF_PHASES];
     vector< vector<int> > rawValues;
     void draw();
     void refresh();
@@ -45,6 +57,14 @@ public:
     void stopRecording();
     void startRecording();
     void drawAllAgain();
+
+    // Analyzing statistics.
+    void getChannelAvgAmplResultTable(double *table, int chanIndx, int parts);
+    void analyzeStatistics();
+    void clearStatistics();
+    string getStatisticsStr();
+    double getRelativeSpecific(string inspected, int phase, int mode);
+
     bool mouseInsideManager();
     bool mouseClickedInsideManager();
     void updateRawValues(int chanIndx, int cval);
@@ -79,6 +99,7 @@ private:
         ar & bwRecordLengthInSecs;
         ar & recording;
         ar & lastGraphUpdate;
+        ar & channelStats;
     }
 };
 

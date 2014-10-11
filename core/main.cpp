@@ -142,6 +142,10 @@ int main(int argc, char **argv)
     EEGDeviceModeRadioButton.addOption(&EEGDevicegOp3);
     EEGDeviceModeRadioButton.setCheckedIndex(2);
 
+    // Add buttons for result mode choise:
+    resultModeRadioButton.addOption(&resultModeRadioButtonOp1);
+    resultModeRadioButton.addOption(&resultModeRadioButtonOp2);
+
     // Initialize components. Fonts, images etc that needs allegro..
     elementList.initElements();
 
@@ -246,19 +250,14 @@ int main(int argc, char **argv)
                 session.endNeurofeedBackSessionInExperiment();
             }
 
-            if (event.keyboard.keycode == ALLEGRO_KEY_G)
-            {
-
-                //gatherExperimentData();
-
-            }
-
             if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
             {
 
                 //analyzeExperimentData();
+                bwManager.analyzeStatistics();
 
             }
+
 
             // EXPERIMENT KEYS ### ^
 
@@ -374,10 +373,19 @@ int main(int argc, char **argv)
         {
             showPanel(NFB_PANEL);
         }
-
         if (ConfigureButton.wasClicked())
         {
             showPanel(SETUP_PANEL);
+        }
+        if (StatisticModeButton.wasClicked())
+        {
+            showPanel(STATISTIC_PANEL);
+        }
+
+        if (renderStatisticButton.wasClicked())
+        {
+            //gatherExperimentData();
+            bwStatsView.refreshStatistic();
         }
 
         // Reboot mindwave button

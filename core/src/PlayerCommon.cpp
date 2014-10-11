@@ -157,6 +157,7 @@ namespace plrCommon
 
     GUIButton restartButton(414+94+100,520+18,25, "media/gfx/restart.png", "Restart neurofeedback session.");
 
+    GUIButton StatisticModeButton(725-68-4, 54, 68, 28, 15, "media/gfx/StatisticMode.png", "Statistics of sessions.");
     GUIButton RecordModeButton(725, 54, 68, 28, 15, "media/gfx/RecordMode.png", "Record or play brainwaves.");
     GUIButton NFBConfigureButton(725+68*1+4*2, 54, 68, 28, 15, "media/gfx/NFBConf.png", "Neurofeedback configuration.");
     GUIButton ConfigureButton(725+68*2+4*2, 54, 68, 28, 15, "media/gfx/Configure.png", "Configuration panel.");
@@ -167,8 +168,8 @@ namespace plrCommon
 
     // Options for nfb
     GUIRadioButton nfbTraineeModeRadioButton(487+10, 112+12*1, "Neurofeedback mode", "Different training options for neurofeedback.", STORABLE);
-    GUICheckBox    traineeOp1( "Gamma Meditation", "Meditation trains gamma.");
-    GUICheckBox    traineeOp2( "Theta/Alpha Meditation", "This mode trains theta and alpha meditation." );
+    GUICheckBox    traineeOp1( "Gamma Meditation (key F2)", "Meditation trains gamma.");
+    GUICheckBox    traineeOp2( "Theta/Alpha Meditation (key F3)", "This mode trains theta and alpha meditation." );
     //GUICheckBox    traineeOp2( "Avarage Meditation", "This mode trains to turn of all brainwave channels." );
 
     // Options for EEG -device.
@@ -184,6 +185,14 @@ namespace plrCommon
 
     // Set up Brainwave Manager and it's GUI (to the previously declared elementlist!)
     BWManager bwManager("Standard", 478, 220, 500, 260, "Different brainwave readings.");
+
+    // Set up Brainwave statistical view and related buttons.
+
+    BWStatsView bwStatsView("Standard", 478, 200, 500, 260, "Different progress values.");
+    GUIRadioButton resultModeRadioButton(487+10, 112+12*1, "Result mode", "Choose which parameters to show.", STORABLE);
+    GUICheckBox    resultModeRadioButtonOp1( "Avarage avg phase", "Show relative value of channel(s) related to other channels.");
+    GUICheckBox    resultModeRadioButtonOp2( "Amplitude avg phase", "Show amplitude in graph." );
+    GUIButton renderStatisticButton(725-34, 112+18, 68, 28, 15, "media/gfx/RenderStatistic.png", "Render statistic.");
 
     /* * * * *
     * E n d  *

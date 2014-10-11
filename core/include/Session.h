@@ -39,6 +39,8 @@ class Session : public GUIElement
         int    nfbSessionPoint;
         int    recTimePoint;
 
+        string startTimeStamp;
+
     protected:
     private:
 
@@ -54,7 +56,7 @@ class Session : public GUIElement
             ar & trainingType;
             ar & sessionOn;
             ar & amountOfPrizePerLevel;
-
+            ar & startTimeStamp;
             ar & calibratedAvarages;
 
             ar & nfbSessionPoint;

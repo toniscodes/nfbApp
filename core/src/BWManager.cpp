@@ -110,6 +110,8 @@ void BWManager::newBWTable()
         // Power avarage.. I think this doesn't fit?
         channel[CHANNEL_POWER_AVG].create(0,0+(CHANNEL_SIZE_Y*7+CHANNEL_SPACING*i),CHANNEL_POWER_AVG,bwRecordLengthInSecs);
 
+        // Clear the statistic.
+        clearStatistics();
 
 }
 
@@ -262,6 +264,9 @@ void BWManager::draw()
     // Draw all channels to screen that are wanted to be shown.
     if (isVisible())
     {
+        if (!showVisualization.isChecked())
+            drawScaledPicture(graphBaseImg,graphUIX-2,graphUIY-CHANNEL_SIZE_Y/2,graphWidth+4,graphHeight);
+
         float graphLookAtX = 0;
 
         channel[CHANNEL_DELTA].draw(visibilityShade);
@@ -334,3 +339,158 @@ void BWManager::draw()
     }
     GUIElement::draw();
 }
+
+
+// TO analyze avarage power spectrums of phases and relative values compared to other values during different phases.
+void BWManager::analyzeStatistics() {
+
+    clearStatistics(); // Just to make sure nothing won't mess up.
+
+    // This calculates first the avarage amplitudes for channels.. then the relative volumes (compared to avarage of all other channels) of current phase of asked channel.
+
+    // Copy the avarage amplitudes of different phases to table first.
+    for (int i=0;i<AMOUNT_OF_CHANNELS;i++)
+        if (useThisTypeInRelativeCalculations(i))
+            getChannelAvgAmplResultTable(channelStats[STAT_POWER][i], i, AMOUNT_OF_PHASES-1);
+
+    // Then make relative map. This is the channel's volume relative to other channels ie 1.5, 0.4, 1.3 etc on asked time..
+    for (int z=0;z<AMOUNT_OF_PHASES-1;z++)
+        for (int i=0;i<AMOUNT_OF_CHANNELS;i++) {
+            // Avarage of all em except this one
+            double avgSum = 0;
+            int avgCount  = 0;
+            for (int q=0;q<AMOUNT_OF_CHANNELS;q++) {
+                if (useThisTypeInRelativeCalculations(q) && i!=q) {
+                    avgSum+=channelStats[STAT_POWER][q][z];
+                    avgCount++;
+                }
+            }
+            channelStats[STAT_RELATIVE][i][z] = channelStats[STAT_POWER][i][z] / (avgSum/avgCount);
+        }
+
+    // Then calculate finally the avarage of the channels own relative values.
+    for (int i=0;i<AMOUNT_OF_CHANNELS;i++) {
+        double avgSum = 0;
+        int avgCount  = 0;
+        for (int z=0;z<AMOUNT_OF_PHASES-1;z++) {
+            avgSum+=channelStats[STAT_RELATIVE][i][z];
+            avgCount++;
+        }
+        channelStats[STAT_RELATIVE][i][AMOUNT_OF_PHASES-1] = (avgSum/avgCount);
+    }
+
+}
+
+string BWManager::getStatisticsStr() {
+    analyzeStatistics();
+    // Printing for testing.
+    string str = "* <- means relative-value of the channel.\n\n";
+    for (int y=0;y<AMOUNT_OF_CHANNELS;y++) {
+        str += getGraphDescriptionText(y);
+        for (int z=0;z<AMOUNT_OF_PHASES;z++)
+            str += "|" + desToStr(showDecimals(channelStats[STAT_POWER][y][z],3));
+        str += "\n";
+        str += getGraphDescriptionText(y) + "_*";
+        for (int z=0;z<AMOUNT_OF_PHASES;z++)
+            str += "|" + desToStr(showDecimals(channelStats[STAT_RELATIVE][y][z],3));
+        str += "\n";
+    }
+
+    // Add relative specifics for session types.
+    str += "\nThese next values are not including delta-channel for calculations. just theta,alpha,beta,gamma for now: \n";
+    str += "\nTheta/alfa-ratio(*) ";
+    for (int z=0;z<AMOUNT_OF_PHASES;z++)
+        str += "|" + desToStr(showDecimals(getRelativeSpecific("theta/alfa",z,STAT_RELATIVE),3));
+
+    str += "\nTheta+Alfa-ratio(*) ";
+    for (int z=0;z<AMOUNT_OF_PHASES;z++)
+        str += "|" + desToStr(showDecimals(getRelativeSpecific("theta+alfa",z,STAT_RELATIVE),3));
+
+    str += "\nGamma-ratio(*) ";
+    for (int z=0;z<AMOUNT_OF_PHASES;z++)
+        str += "|" + desToStr(showDecimals(getRelativeSpecific("gamma",z,STAT_RELATIVE),3));
+
+    // Change all dots to , for helping later math processing in external programs.
+    replace( str.begin(), str.end(), '.', ',' );
+
+    return str;
+    playerLog(str);
+
+}
+
+double BWManager::getRelativeSpecific(string inspected, int phase, int mode) {
+    analyzeStatistics(); // This can be taken away later for optimization. Now to make sure it's always calculated.
+    if (mode == STAT_RELATIVE) {
+        // The relative of these specifics are currently done between gamma, alpha, beta and theta. delta was left off for some reason. could be because of big values.. could be later tried to include as well.
+        double *thetax = channelStats[STAT_RELATIVE][CHANNEL_THETA];
+        double *alphax = channelStats[STAT_RELATIVE][CHANNEL_ALPHA];
+        double *betax  = channelStats[STAT_RELATIVE][CHANNEL_BETA];
+        double *gammax = channelStats[STAT_RELATIVE][CHANNEL_GAMMA];
+        double result = 0;
+        if (inspected == "theta+alfa") {
+            //result = ((thetax[phase]+alphax[phase])/2.0d)/((gammax[phase]+betax[phase])/2.0d);
+            result = (thetax[phase]+alphax[phase])/2.0d;
+        }
+        if (inspected == "theta/alfa") {
+            result = thetax[phase]/alphax[phase];
+        }
+        if (inspected == "gamma") {
+            //result = gammax[phase]/((thetax[phase]+alphax[phase]+betax[phase])/3.0d); olikohan nää jonkun aivopierun ansiosta? :D
+            result = gammax[phase];
+        }
+        return result;
+    }
+    else {
+        // POWER
+        double *thetax = channelStats[STAT_POWER][CHANNEL_THETA];
+        double *alphax = channelStats[STAT_POWER][CHANNEL_ALPHA];
+        double *gammax = channelStats[STAT_POWER][CHANNEL_GAMMA];
+        double result = 0;
+        if (inspected == "theta+alfa") {
+            result = ((thetax[phase]+alphax[phase])/2.0d);
+        }
+        if (inspected == "theta/alfa") {
+            result = thetax[phase]/alphax[phase];
+        }
+        if (inspected == "gamma") {
+            result = gammax[phase];
+        }
+        return result;
+    }
+}
+
+void BWManager::clearStatistics() {
+    for (int x=0;x<AMOUNT_OF_STAT_MODES;x++)
+        for (int y=0;y<AMOUNT_OF_CHANNELS;y++)
+            for (int z=0;z<AMOUNT_OF_PHASES;z++)
+                    channelStats[x][y][z] = 0.0d;
+}
+
+// Returns table of the avarage power calculation results. Give always one index bigger table as input than parts is. Because last one is total avarage.
+// Avarage here means the avarage of the amplitude in the requested phases. not between channels.
+void BWManager::getChannelAvgAmplResultTable(double *table, int chanIndx, int parts)
+{
+    double avgSum=0;
+    double totalAvgSum=0;
+    double value=0;
+    double avg=0;
+    double totalRecordLength = channel[chanIndx].getRecordedLength(); // The last recorded point
+    for (int q=0;q<parts;q++) {
+        int from = (int)((totalRecordLength/(double)parts)*(double)q);
+        int to   = (int)((totalRecordLength/(double)parts)*(double)(q+1));
+        avgSum   = 0;
+        for (int i=from; i<to; i++)
+        {
+            int value = channel[chanIndx].valueOf(i);
+            if (value==CHANNEL_EMPTY_INDEX) // Empty recording area is rare? Why someone record in parts? But If that occurs it will be counted as zero now.
+                value = 0;
+            avgSum += value;
+        }
+        double partAvg = (avgSum/((double)(to-from)));
+        totalAvgSum += partAvg;
+        table[q] = partAvg;
+    }
+    table[parts] = totalAvgSum/parts; // The last one is reserved for the total avarage.
+}
+
+

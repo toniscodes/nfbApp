@@ -19,6 +19,7 @@ public:
     virtual ~GUIElementList();
     GUIElement* addElement(GUIElement* elem);
     GUIElement* addElement(GUIElement* elem, int zIndex);
+    void unLinkElementById(int id);
     vector<GUIElement*> getElements() { return element; }
     void refresh();
     void draw();

@@ -39,6 +39,16 @@ GUIElement* GUIElementList::addElement(GUIElement *elem, int zIndex) {
     return elem;
 }
 
+// This is neccessary for example when loading objects from hd to memory for data reading purposes only.. that would cause them to link into GUI system and cause possible problems
+// The elements must be unloaded after initializing in that case..
+void GUIElementList::unLinkElementById(int id) {
+    for(size_t i = 0; i < element.size(); ++i)
+    {
+        if (element[i]->getId() == id)
+            element.erase (element.begin()+i);
+    }
+}
+
 void GUIElementList::refresh() {
     for(size_t i = 0; i < element.size(); ++i)
     {

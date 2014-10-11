@@ -26,6 +26,7 @@ namespace plrCommon
 {
 
     void loadBWTable(string bwFileFullPath);
+    BWManager getBWManagerOfFile(string bwFileFullPath);
     void saveBWTable(string bwFileFullPath);
     void initializeBrainWaveTable();
     string openFileImportDialogAndReturnPath(string textInBrowser, int flag, string types);
@@ -37,7 +38,7 @@ namespace plrCommon
     void printAvarageData();
     void saveExperiment();
     void renderResultsToFile(string path);
-    string getChannelResultRow(int chanIndx, int parts);
+
 
 
 };

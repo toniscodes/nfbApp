@@ -17,7 +17,8 @@
 
 // These are now here because some things need these and they are in difficult order so.. Just here for now.. glue
 
-enum CPANEL_MODE {  RECORD_PLAY_PANEL,
+enum CPANEL_MODE {  STATISTIC_PANEL,
+                    RECORD_PLAY_PANEL,
                     NFB_PANEL,
                     SETUP_PANEL,
                     AMOUNT_OF_PANEL_MODES
@@ -37,6 +38,7 @@ enum NFB_LEVELS {  LEVEL_1,
                    LEVEL_3,
                    LEVEL_4,
                    LEVEL_5,
+                   LEVEL_6,
                    AMOUNT_OF_LEVELS
                  }; // Last one is for telling the amount of levels.
 

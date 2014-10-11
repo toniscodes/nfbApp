@@ -23,6 +23,7 @@ namespace plrCommon
 void hideAllPanels()
 {
     bwManager.hide();
+    bwStatsView.hide();
     recordRAWData.hide();
     //activityMeterRadioButton.hide();
     mindWavePortRollButton.hide();
@@ -34,6 +35,9 @@ void hideAllPanels()
     OpenEEGPortRollButton.hide();
     reBootOpenEEG.hide();
     mindWaveScaleFactor.hide();
+
+    resultModeRadioButton.hide();
+    renderStatisticButton.hide();
 
     sessionLength.hide();
     minimumPlace.hide();
@@ -53,6 +57,12 @@ void showPanel(int panelIndex)
     hideAllPanels();
     controlPanelMode = panelIndex;
     // This could be changed later automatically be chosen with button's panel variable or similar that determines in which panel button belongs to.
+    // BUt for now.. Still doing this ancient way :)
+    if (panelIndex == STATISTIC_PANEL) {
+        bwStatsView.show();
+        resultModeRadioButton.show();
+        renderStatisticButton.show();
+    }
     if (panelIndex == RECORD_PLAY_PANEL)
     {
         if (!showVisualization.isChecked())   // Note that we want to hide everything in this basic panel.. To have more view to the actual visualization
@@ -111,9 +121,6 @@ void updateMainGUI()
     if (!showVisualization.isChecked())
         al_draw_bitmap(bgImg,0,0,0);
 
-    // Draw base for graphs
-    if (bwManager.isVisible() && !showVisualization.isChecked())
-        drawScaledPicture(graphBaseImg,bwManager.graphUIX-2,bwManager.graphUIY-CHANNEL_SIZE_Y/2,bwManager.graphWidth+4,bwManager.graphHeight); //al_draw_bitmap(graphBaseImg,476,220,505,260);
 
     if (libraryFont)
     {

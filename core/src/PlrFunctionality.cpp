@@ -72,6 +72,21 @@ void loadBWTable(string bwFileFullPath)
     }
 }
 
+// This is a crash function. Don't use this.
+BWManager getBWManagerOfFile(string bwFileFullPath) {
+    BWManager tmpBWMan;
+    // Remember to unlink immediately not to confuse it into GUIsystem!
+    elementList.unLinkElementById(tmpBWMan.getId());
+    if (bwFileFullPath!="") {
+        if ( boost::filesystem::exists( (bwFileFullPath).c_str() ))
+        {
+            std::ifstream ifs( (bwFileFullPath).c_str()  );
+            boost::archive::text_iarchive ia(ifs);
+            ia >> tmpBWMan;
+        }
+    }
+    return tmpBWMan;
+}
 
 void saveBWTable(string bwFileFullPath)
 {
@@ -171,6 +186,7 @@ void saveExperiment()
 {
     // Then let's move all the stuff from this experiment for this subject to his own folder for later usage :)
 
+
     string resultsFolder = BWFolder+"results/";
     playerLog("Moving experiment data..");
     // Find first empty folder 0-1000 from the results-folder to add all stuff there..
@@ -204,188 +220,14 @@ void saveExperiment()
 }
 
 
-// Printing results of the current bw data:
-// Channel index is asked and the partition amount. Ie avarage of 3 parts or just 1 part. Total avarage in the end.
-string getChannelResultRow(int chanIndx, int parts)
-{
-    string resultStr="";
-    resultStr += getGraphTheme(chanIndx).text;
-    string theValueStr;
-    double avgSum=0;
-    double totalAvgSum=0;
-    double value=0;
-    double avg=0;
-    double totalRecordLength = bwManager.channel[chanIndx].getRecordedLength(); // The last recorded point
-    //playerLog("length of recording " + desToStr(totalRecordLength));
-    for (int q=0;q<parts;q++) {
-        int from = (int)((totalRecordLength/(double)parts)*(double)q);
-        int to   = (int)((totalRecordLength/(double)parts)*(double)(q+1));
-        avgSum   = 0;
-        for (int i=from; i<to; i++)
-        {
-            int value = bwManager.channel[chanIndx].valueOf(i);
-            if (value==CHANNEL_EMPTY_INDEX) // Empty recording area is rare? Why someone record in parts? But If that occurs it will be counted as zero now.
-                value = 0;
-            avgSum += value;
-            //playerLog("val " + intToStr(i) + ":" + desToStr(value));
-        }
-        double partAvg = (avgSum/((double)(to-from)));
-        totalAvgSum += partAvg;
-        //playerLog("partAvg " + desToStr(partAvg));
-        theValueStr = desToStr(showDecimals(partAvg,3)); // Let's change the . to , for better handling in calculations!
-        replace( theValueStr.begin(), theValueStr.end(), '.', ',' ); // This is for calc app to understand it straightly.
-        resultStr += "|"+theValueStr;
-        //resultStr += "|"+intToStr((int)(avgSum));
-    }
-
-    avg = totalAvgSum/parts;
-    theValueStr = desToStr(showDecimals(avg,3)); // Let's change the . to , for better handling in calculations!
-    replace( theValueStr.begin(), theValueStr.end(), '.', ',' );
-    resultStr += "|"+theValueStr;
-    //resultStr += "|"+intToStr((int)(avg));
-    return resultStr;
-}
-
-
-
-// Returns table of the avarage calculation results. Give always one index bigger table as input than parts is. Because last one is total avarage.
-void getChannelResultTable(double *table, int chanIndx, int parts)
-{
-    double avgSum=0;
-    double totalAvgSum=0;
-    double value=0;
-    double avg=0;
-    double totalRecordLength = bwManager.channel[chanIndx].getRecordedLength(); // The last recorded point
-    for (int q=0;q<parts;q++) {
-        int from = (int)((totalRecordLength/(double)parts)*(double)q);
-        int to   = (int)((totalRecordLength/(double)parts)*(double)(q+1));
-        avgSum   = 0;
-        for (int i=from; i<to; i++)
-        {
-            int value = bwManager.channel[chanIndx].valueOf(i);
-            if (value==CHANNEL_EMPTY_INDEX) // Empty recording area is rare? Why someone record in parts? But If that occurs it will be counted as zero now.
-                value = 0;
-            avgSum += value;
-        }
-        double partAvg = (avgSum/((double)(to-from)));
-        totalAvgSum += partAvg;
-        table[q] = partAvg;
-    }
-
-    table[parts] = totalAvgSum/parts; // The last one is reserved for the total avarage.
-}
-
-// This calculates the relative volumes (compared to avarage of all other channels) of current phase of asked channel.
-void getChannelResultTableRelative(double *table, int chanIndx, int parts)
-{
-    double results[AMOUNT_OF_CHANNELS][parts+1]; // The last given is the avarage of all so this is why this is +1
-    // Copy the amplitudes of different phases to table.
-    for (int i=0;i<AMOUNT_OF_CHANNELS;i++)
-        if (useThisTypeInRelativeCalculations(i))
-            getChannelResultTable(results[i], i, parts);
-
-    // Then make relative map.
-    double resultsRel[AMOUNT_OF_CHANNELS][parts+1]; // The last given is the avarage of all so this is why this is +1
-    for (int z=0;z<parts;z++)
-        for (int i=0;i<AMOUNT_OF_CHANNELS;i++) {
-            // Avarage of all em except this one
-            double avgSum = 0;
-            int avgCount  = 0;
-            for (int q=0;q<AMOUNT_OF_CHANNELS;q++) {
-                if (useThisTypeInRelativeCalculations(q) && i!=q) {
-                        avgSum+=results[q][z];
-                        avgCount++;
-                }
-            }
-            resultsRel[i][z] = results[i][z] / (avgSum/avgCount);
-        }
-
-    // Then calclate the last draw.. That avarage of the whole .. The total avarage of all em.. Sweep.. Swipe.. Clean..
-    for (int i=0;i<AMOUNT_OF_CHANNELS;i++) {
-        double avgSum = 0;
-        int avgCount  = 0;
-        for (int z=0;z<parts;z++) {
-            avgSum+=resultsRel[i][z];
-            avgCount++;
-        }
-        resultsRel[i][parts] = (avgSum/avgCount);
-    }
-
-    // Then copy the asked channel to given table.
-    for (int z=0;z<parts+1;z++) {
-        table[z] = resultsRel[chanIndx][z];
-    }
-
-}
-
-string getChannelResultRowRel(int chanIndx, int parts)
-{
-    string resultStr="";
-    resultStr += getGraphTheme(chanIndx).text + "Rel";
-    string theValueStr;
-    double relTable[parts+1];
-    getChannelResultTableRelative(relTable,chanIndx,parts);
-    for (int z=0;z<parts+1;z++) {
-        theValueStr = desToStr(showDecimals(relTable[z],3)); // Let's change the . to , for better handling in calculations!
-        replace( theValueStr.begin(), theValueStr.end(), '.', ',' );
-        resultStr += "|"+theValueStr;
-    }
-    return resultStr;
-}
-
 void renderResultsToFile(string path)
 {
     playerLog("Printing results to file " + path);
-    string resultStr = "\n\nData From Current Experiment ( dateTimeStamp:" + getTimeStampNow() + ") :\n";
+    string resultStr = "\n\nData From Current Experiment ( dateTimeStamp:" + session.startTimeStamp + ") :\n";
     resultStr += "Experiment mode("+nfbTraineeModeRadioButton.getSelectionTxt()+") Session length("+desToStr(sessionLength.getConvertedValue())+"min) \n\n";
 
-    int partitions = 3;
-
-    for (int i=0;i<AMOUNT_OF_CHANNELS;i++) {
-        resultStr += getChannelResultRow(i,partitions)+"\n";
-        if (useThisTypeInRelativeCalculations(i))
-            resultStr += getChannelResultRowRel(i,partitions)+"\n";
-    }
-
-    // These next things are a bit old, were used in experiment. Could be changed a bit.
-
-    // Calculate also t/a ratios.
-    double thetax[partitions+1];
-    double alphax[partitions+1];
-    getChannelResultTable(thetax, CHANNEL_THETA, partitions);
-    getChannelResultTable(alphax, CHANNEL_ALPHA1, partitions);
-    resultStr += "t/a-ratio";
-    for (int i=0;i<partitions+1;i++) {
-        double tA = thetax[i]/alphax[i];
-        string theValueStr = desToStr(showDecimals(tA,3)); // Let's change the . to , for better handling in calculations!
-        replace( theValueStr.begin(), theValueStr.end(), '.', ',' ); // This is for calc app to understand it straightly.
-        resultStr += "|"+theValueStr;
-    }
-
-    // Also could be possible to.. compare alfa channel 2 ..? Delta is not used as it has so much noise.
-    // Calculate also relative t+a -ratio to other channels(gamma,beta).
-    double gammax[partitions+1];
-    double betax[partitions+1];
-    getChannelResultTable(gammax, CHANNEL_GAMMA, partitions);
-    getChannelResultTable(betax, CHANNEL_BETA, partitions);
-    resultStr += "\n*(t+a)-ratio";
-    for (int i=0;i<partitions+1;i++) {
-        double taRel = ((thetax[i]+alphax[i])/2.0d)/((gammax[i]+betax[i])/2.0d);
-        string theValueStr = desToStr(showDecimals(taRel,3)); // Let's change the . to , for better handling in calculations!
-        replace( theValueStr.begin(), theValueStr.end(), '.', ',' ); // This is for calc app to understand it straightly.
-        resultStr += "|"+theValueStr;
-    }
-
-    // Calculate also relative gamma ratios (to alpa+theta+beta).
-    getChannelResultTable(gammax, CHANNEL_GAMMA, partitions);
-    getChannelResultTable(betax, CHANNEL_BETA, partitions);
-    resultStr += "\n*g-ratio";
-    for (int i=0;i<partitions+1;i++) {
-        double gRel = gammax[i]/((thetax[i]+alphax[i]+betax[i])/3.0d);
-        string theValueStr = desToStr(showDecimals(gRel,3)); // Let's change the . to , for better handling in calculations!
-        replace( theValueStr.begin(), theValueStr.end(), '.', ',' ); // This is for calc app to understand it straightly.
-        resultStr += "|"+theValueStr;
-    }
+    // Analyze and bring the data into printing.
+    resultStr += bwManager.getStatisticsStr();
 
     resultStr += "\n\n Automatic calibrations occured: " + intToStr(session.automaticCalibrationCount);
 
@@ -399,6 +241,5 @@ void renderResultsToFile(string path)
 
     playerLog("Done..");
 }
-
 
 }; // End of namespace

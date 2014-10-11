@@ -42,6 +42,7 @@
 		<Unit filename="include/BWGraph.h" />
 		<Unit filename="include/BWManager.h" />
 		<Unit filename="include/BWMeter.h" />
+		<Unit filename="include/BWStatsView.h" />
 		<Unit filename="include/BgEffect.h" />
 		<Unit filename="include/BoostCopyDir.h" />
 		<Unit filename="include/BoostRelativePath.h" />
@@ -74,6 +75,7 @@
 		<Unit filename="src/BWGraph.cpp" />
 		<Unit filename="src/BWManager.cpp" />
 		<Unit filename="src/BWMeter.cpp" />
+		<Unit filename="src/BWStatsView.cpp" />
 		<Unit filename="src/BgEffect.cpp" />
 		<Unit filename="src/BoostCopyDir.cpp" />
 		<Unit filename="src/BoostRelativePath.cpp" />

@@ -169,6 +169,8 @@ void Session::start() {
         audioEnvironment.restart();
         // Start calibration.
         bwMeter.startCalibration(true);
+        // Make time stamp for starting time.
+        startTimeStamp = getTimeStampNow();
     }
 
 
@@ -217,6 +219,8 @@ void Session::refresh()  {
         recTimePoint = bwPositionInSec; // Important. Tells where we were after autosave and load.
     }
     if (nfbSessionPoint==NFB_END_POINT) {
+        // Last moment autosave session.
+        autoSaveSession();
         // Do the ending stuff..
         sessionOn = false;
         endNeurofeedBackSessionInExperiment();
@@ -266,6 +270,7 @@ void Session::doThingsAfterAutoLoad()
 
 void Session::doThingsBeforeAutoSave()
 {
+    trainingType = getTrainingType();
     // Save current calibration into autosave.
     for (int i=0; i<AMOUNT_OF_CHANNELS; i++)
     {

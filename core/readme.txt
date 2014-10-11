@@ -1,7 +1,7 @@
 # Little readme:
 
 Description:
-Application to run neurofeedback experiments. Currently created sessions:
+Application to run neurofeedback experiments and track results on repeated sessions. Currently created sessions:
 -Gamma
 -Theta/Alfa
 -> Suitable for meditative sessions.
@@ -19,6 +19,7 @@ Supported devices currently:
 *Results of each session will be saved to results-folder.
 *Autosaving during sessions. It will continue from the point where you quit during session.
 *Configurations will be saved and loaded when closing and opening app automatically.
+*Preview results of sessions as graph in statistical mode.
 
 If app tells that open eeg device doesn't give packets and you have to restart:
 1. Just reboot and continue.
@@ -29,9 +30,6 @@ If app tells that open eeg device doesn't give packets and you have to restart:
 -allegro lib
 -audiere lib
 -fftw lib
-
-#Desired coming features:
--Mapping for profile's repeated sessions for progress monitoring.
 
 Feel free to use the app for any purpose.
 

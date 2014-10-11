@@ -168,8 +168,8 @@ namespace plrCommon
 
     // Options for nfb
     GUIRadioButton nfbTraineeModeRadioButton(487+10, 112+12*1, "Neurofeedback mode", "Different training options for neurofeedback.", STORABLE);
-    GUICheckBox    traineeOp1( "Gamma Meditation (key F2)", "Meditation trains gamma.");
-    GUICheckBox    traineeOp2( "Theta/Alpha Meditation (key F3)", "This mode trains theta and alpha meditation." );
+    GUICheckBox    traineeOp1( "Gamma Meditation", "Meditation trains gamma.");
+    GUICheckBox    traineeOp2( "Theta/Alpha Meditation", "This mode trains theta and alpha meditation." );
     //GUICheckBox    traineeOp2( "Avarage Meditation", "This mode trains to turn of all brainwave channels." );
 
     // Options for EEG -device.

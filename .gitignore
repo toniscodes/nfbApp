@@ -1,0 +1,5 @@
+# Ignore all stuff in results-folder.
+core/brainwaves/results/**/*
+core/brainwaves/resultsSafeCopies/**/*
+# .objs -folder?
+core/.objs/

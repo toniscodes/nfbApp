@@ -467,7 +467,7 @@ void BWManager::clearStatistics() {
 }
 
 // Returns table of the avarage power calculation results. Give always one index bigger table as input than parts is. Because last one is total avarage.
-// Avarage here means the avarage of the amplitude in the requested phases. not between channels.
+// Avarage here means the avarage of the amplitude in the requested phases. not between total channels.
 void BWManager::getChannelAvgAmplResultTable(double *table, int chanIndx, int parts)
 {
     double avgSum=0;

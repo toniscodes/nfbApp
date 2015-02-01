@@ -230,18 +230,12 @@ int main(int argc, char **argv)
 
             if (event.keyboard.keycode == ALLEGRO_KEY_PAD_PLUS)   // NFB Session load.
             {
-                if (getCurrentLevel()<AMOUNT_OF_LEVELS-1)
-                {
                     session.nextLevel();
-                }
             }
 
             if (event.keyboard.keycode == ALLEGRO_KEY_MINUS)   // NFB Session save.
             {
-                if (getCurrentLevel()>0)
-                {
                     session.previousLevel();
-                }
             }
 
 

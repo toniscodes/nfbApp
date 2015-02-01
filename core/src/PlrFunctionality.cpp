@@ -115,7 +115,7 @@ void initializeBrainWaveTable()
     bwManager.newBWTable();
 }
 
-// Tänne load session, save sesseion sekä näppäimet jne.
+// Tänne load session, save session sekä näppäimet jne.
 //! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -231,7 +231,7 @@ void renderResultsToFile(string path)
 
     resultStr += "\n\n Automatic calibrations occured: " + intToStr(session.automaticCalibrationCount);
 
-    resultStr += "\n\n Last level reached: " + intToStr(getCurrentLevel());
+    resultStr += "\n\n Last level reached: " + intToStr(getLastReachedLevel()) + " / " + intToStr(AMOUNT_OF_LEVELS);
 
     std::ofstream ofs( path.c_str() );
     {

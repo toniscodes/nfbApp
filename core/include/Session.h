@@ -30,6 +30,7 @@ class Session : public GUIElement
         int   automaticCalibrationCount;
         float lastFoundPrizeTime;
         int   currentLevel;
+        //int   lastLevelReached; using currentLevel now until these experiments are done. currentLevel%(amountoflevels) will tell the current level
         int   prizesGot;
         int   trainingType;
         bool  sessionOn;

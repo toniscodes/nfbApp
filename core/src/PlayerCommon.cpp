@@ -121,15 +121,15 @@ namespace plrCommon
 
     // Remember to make check that each id is existing in configure some day or just always remember to remove the old configuration If doing updates to storable guis!!!!!
 
-    GUIRollButton calibrationTime(487+300, 180+15*2, 25,"Calibration time.", 0.0f, 300.0f, " s", 60.0f, "Calibration time in seconds.", STORABLE);
+    GUIRollButton calibrationTime(487+300, 180+15*2, 25,"Calibration time.", 0.0f, 300.0f, " s", 120.0f, "Calibration time in seconds.", STORABLE);
 
-    GUIRollButton prizeThreshold(487+300,  180+15*6, 25,"Prize threshold.", 0.0f, 100.0f, " 1%", 75.0f, "Threshold to give prize(between min-max)%.", STORABLE);
+    GUIRollButton prizeThreshold(487+300,  180+15*6, 25,"Prize threshold.", 0.0f, 100.0f, " 1%", 25.0f, "Threshold to give prize(between min-max)%.", STORABLE);
 
-    GUIRollButton sessionLength(487+300, 180+15*10, 25,"Session length.", 0.0f, 60.0f, " min", 10.0f, "Session length in minutes.", STORABLE);
+    GUIRollButton sessionLength(487+300, 180+15*10, 25,"Session length.", 0.0f, 60.0f, " min", 28.0f, "Session length in minutes.", STORABLE);
 
     GUIRollButton timeOfNextPrizeMin(460+70, 180+15*10, 25,"Minimum next prize time.", 0, 120, " sec", 25, "Time before next prize is allowed to be given.", STORABLE);
 
-    GUIRollButton amountOfPrizesPerLevel(460+70, 180+15*14, 25,"Amount of prices per level.", 0, 25, " prizes", 7, "How many prizes must be reach before next level.", STORABLE);
+    GUIRollButton amountOfPrizesPerLevel(460+70, 180+15*14, 25,"Amount of prices per level.", 0, 25, " prizes", 10, "How many prizes must be reach before next level.", STORABLE);
 
     GUICheckBox showVisualization(500, 122+15*20, "Show Visualization", false, "Show visualization.");
     GUICheckBox showMirror(500, 122+15*21, "Show Mirror", true, "The mirror effect below. Off to increase performance.");
@@ -620,8 +620,14 @@ namespace plrCommon
         }
     }
 
+    // Get last reached level in this session. From 1 - X
+    int getLastReachedLevel() {
+        return session.currentLevel+1;
+    }
+
+    // Get the current level in format 0-X.. always starting from the 0 If last level was reached. This is a hack during this experiment.
     int getCurrentLevel() {
-        return session.currentLevel;
+        return session.currentLevel%(AMOUNT_OF_LEVELS);
     }
 
     bool isSessionOn() {

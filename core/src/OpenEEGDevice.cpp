@@ -194,7 +194,7 @@ double OpenEEGDevice::getRawChannelValueOfTimePoint(int chanIndex, double reques
 //! This determines how the raw value is scaled to -1.0d to 1.0d.
 double OpenEEGDevice::getRawScaledValue(double val) {
 
-    // The estimated amplitude range.
+    // The estimated amplitude range. TODO: minimum for the range as well.
     double maxAmplitude = 768.0d;
 
     // Scaled.

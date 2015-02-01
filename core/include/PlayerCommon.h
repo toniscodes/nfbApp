@@ -446,6 +446,9 @@ int getTrainingType();
 //! ..
 int getCurrentLevel();
 
+//! Last reached level
+int getLastReachedLevel();
+
 //! Ssession running?
 bool isSessionOn();
 

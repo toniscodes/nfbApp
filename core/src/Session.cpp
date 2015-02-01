@@ -21,6 +21,7 @@ void Session::init() {
     lastFoundPrizeTime   = al_get_time();
     sessionOn            = false;
     automaticCalibrationCount = 0;
+    //lastLevelReached     = LEVEL_1;
 
     nfbSessionPoint      = NFB_BEGIN_POINT;
 
@@ -98,12 +99,13 @@ void Session::nextLevel() {
     prizesGot=0;
     // Fade out old sounds..
     audioEnvironment.fadeOutCurrentLevelChannels();
-    // Determine level change. Purkalla nyt silleen, että ei nollaudu levelilaskuri.
+    // Determine level change. Purkalla nyt silleen, että ei nollaudu levelilaskuri. #!#!#!#!# myöhemmin korjaus sit kun ei tarvii serialisoinnin sotkeentumista pelätä
     currentLevel++;
-    if (currentLevel>=AMOUNT_OF_LEVELS)
-        currentLevel--;
+    //lastLevelReached++;
+    //if (currentLevel>=AMOUNT_OF_LEVELS)
+        //currentLevel--;
         //currentLevel=LEVEL_1;
-    playerLog("Level change to " + intToStr(currentLevel+1));
+    playerLog("Level change to " + intToStr(getCurrentLevel()+1));
     // Start playing this new one as now current level is set again.
     audioEnvironment.play();
 }

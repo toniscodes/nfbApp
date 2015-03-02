@@ -400,15 +400,15 @@ string BWManager::getStatisticsStr() {
     str += "\nThese next values are not including delta-channel for calculations. just theta,alpha,beta,gamma for now: \n";
     str += "\nTheta/alfa-ratio(*) ";
     for (int z=0;z<AMOUNT_OF_PHASES;z++)
-        str += "|" + desToStr(showDecimals(getRelativeSpecific("theta/alfa",z,STAT_RELATIVE),3));
+        str += "|" + desToStr(showDecimals(getSpecificOfResult("theta/alfa",z,STAT_RELATIVE),3));
 
     str += "\nTheta+Alfa-ratio(*) ";
     for (int z=0;z<AMOUNT_OF_PHASES;z++)
-        str += "|" + desToStr(showDecimals(getRelativeSpecific("theta+alfa",z,STAT_RELATIVE),3));
+        str += "|" + desToStr(showDecimals(getSpecificOfResult("theta+alfa",z,STAT_RELATIVE),3));
 
     str += "\nGamma-ratio(*) ";
     for (int z=0;z<AMOUNT_OF_PHASES;z++)
-        str += "|" + desToStr(showDecimals(getRelativeSpecific("gamma",z,STAT_RELATIVE),3));
+        str += "|" + desToStr(showDecimals(getSpecificOfResult("gamma",z,STAT_RELATIVE),3));
 
     // Change all dots to , for helping later math processing in external programs.
     replace( str.begin(), str.end(), '.', ',' );
@@ -418,7 +418,8 @@ string BWManager::getStatisticsStr() {
 
 }
 
-double BWManager::getRelativeSpecific(string inspected, int phase, int mode) {
+// Gets either amplitude or relative value of asked parameter ie. "gamma", "t+a" or "t/a" from asked phase and mode(power or relative).
+double BWManager::getSpecificOfResult(string inspected, int phase, int mode) {
     analyzeStatistics(); // This can be taken away later for optimization. Now to make sure it's always calculated.
     if (mode == STAT_RELATIVE) {
         // The relative of these specifics are currently done between gamma, alpha, beta and theta. delta was left off for some reason. could be because of big values.. could be later tried to include as well.
@@ -427,11 +428,11 @@ double BWManager::getRelativeSpecific(string inspected, int phase, int mode) {
         double *betax  = channelStats[STAT_RELATIVE][CHANNEL_BETA];
         double *gammax = channelStats[STAT_RELATIVE][CHANNEL_GAMMA];
         double result = 0;
-        if (inspected == "theta+alfa") {
+        if (inspected == "theta+alfa" || inspected == "t+a") {
             //result = ((thetax[phase]+alphax[phase])/2.0d)/((gammax[phase]+betax[phase])/2.0d);
             result = (thetax[phase]+alphax[phase])/2.0d;
         }
-        if (inspected == "theta/alfa") {
+        if (inspected == "theta/alfa" || inspected == "t/a") {
             result = thetax[phase]/alphax[phase];
         }
         if (inspected == "gamma") {
@@ -441,15 +442,15 @@ double BWManager::getRelativeSpecific(string inspected, int phase, int mode) {
         return result;
     }
     else {
-        // POWER
+        // POWER is just simply the amplitude (avarage inside the asked area ie middle :) but not between channels as it's in relative as far as I remember how this works)
         double *thetax = channelStats[STAT_POWER][CHANNEL_THETA];
         double *alphax = channelStats[STAT_POWER][CHANNEL_ALPHA];
         double *gammax = channelStats[STAT_POWER][CHANNEL_GAMMA];
         double result = 0;
-        if (inspected == "theta+alfa") {
+        if (inspected == "theta+alfa" || inspected == "t+a") {
             result = ((thetax[phase]+alphax[phase])/2.0d);
         }
-        if (inspected == "theta/alfa") {
+        if (inspected == "theta/alfa" || inspected == "t/a") {
             result = thetax[phase]/alphax[phase];
         }
         if (inspected == "gamma") {

@@ -82,17 +82,101 @@ void BWStatsView::refreshStatistic() {
         divider = 100.0;
     }
 
+    // Gather for statistic view of different session types.
     for (int i=0;i<resultSessions.size();i++) {
         if (resultSessions[i].trainingType==GAMMA_MEDITATION_TRAINING) {
-            statisticPoints[GAMMA_MEDITATION_TRAINING].push_back(resultSessionBWs[i].getRelativeSpecific("gamma",AVG_PHASE,resultMode)/divider);
+            statisticPoints[GAMMA_MEDITATION_TRAINING].push_back(resultSessionBWs[i].getSpecificOfResult("gamma",AVG_PHASE,resultMode)/divider);
             playerLog("Added gamma avarage of session.");
         }
         if (resultSessions[i].trainingType==THETA_ALPHA_MEDITATION_TRAINING) {
-            statisticPoints[THETA_ALPHA_MEDITATION_TRAINING].push_back(resultSessionBWs[i].getRelativeSpecific("theta+alfa",AVG_PHASE,resultMode)/divider);
+            statisticPoints[THETA_ALPHA_MEDITATION_TRAINING].push_back(resultSessionBWs[i].getSpecificOfResult("theta+alfa",AVG_PHASE,resultMode)/divider);
             playerLog("Added theta/alfa avarage of session.");
         }
     }
 
+
+    /* Gather experiment results for analysing and save to file. */
+    string resultStr = "#id|Session type|g1(A)|g2(A)|g3(A)|gAvg(A)|gΔ(A)|g1(r)|g2(r)|g3(r)|gAvg(r)|gΔ(r)|t+a1(A)|t+a2(A)|t+a3(A)|t+aAvg(A)|t+aΔ(A)|t+a1(r)|t+a2(r)|t+a3(r)|t+aAvg(r)|t+aΔ(r)|t/a1(A)|t/a2(A)|t/a3(A)|t/aAvg(A)|t/aΔ(A)|t/a1(r)|t/a2(r)|t/a3(r)|t/aAvg(r)|t/aΔ(r)";
+    /*string gammaStr = "#id|Session type|g3(A)|gAvg(A)|gΔ(A)|g3(r)|gAvg(r)|gΔ(r)|t+a1(A)|t+a2(A)|t+a3(A)|t+aAvg(A)|t+aΔ(A)|t+a1(r)|t+a2(r)|t+a3(r)|t+aAvg(r)|t+aΔ(r)|t/a1(A)|t/a2(A)|t/a3(A)|t/aAvg(A)|t/aΔ(A)|t/a1(r)|t/a2(r)|t/a3(r)|t/aAvg(r)|t/aΔ(r)";
+    string taStr = "#id|Session type|gΔ(A)|gΔ(r)|t+aΔ(A)|t+aΔ(r)|t/aΔ(A)|t/aΔ(r)|";*/
+    string gammaStr = resultStr;
+    string taStr = resultStr;
+    for (int i=0;i<resultSessions.size();i++) {
+        string tmpStr = "";
+        tmpStr += "\n"+intToStr(i)+"|";
+        string prefix="";
+        if (resultSessions[i].trainingType==GAMMA_MEDITATION_TRAINING)
+            prefix += "Gamma-session";
+        if (resultSessions[i].trainingType==THETA_ALPHA_MEDITATION_TRAINING)
+            prefix += "Theta/Alfa-session";
+
+            tmpStr += prefix;
+
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",START_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",MIDDLE_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",END_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",AVG_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",END_PHASE,STAT_POWER)-resultSessionBWs[i].getSpecificOfResult("gamma",START_PHASE,STAT_POWER));
+
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",START_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",MIDDLE_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",END_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",AVG_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",END_PHASE,STAT_RELATIVE)-resultSessionBWs[i].getSpecificOfResult("gamma",START_PHASE,STAT_RELATIVE));
+
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",START_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",MIDDLE_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",END_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",AVG_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",END_PHASE,STAT_POWER)-resultSessionBWs[i].getSpecificOfResult("t+a",START_PHASE,STAT_POWER));
+
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",START_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",MIDDLE_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",END_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",AVG_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",END_PHASE,STAT_RELATIVE)-resultSessionBWs[i].getSpecificOfResult("t+a",START_PHASE,STAT_RELATIVE));
+
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",START_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",MIDDLE_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",END_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",AVG_PHASE,STAT_POWER));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",END_PHASE,STAT_POWER)-resultSessionBWs[i].getSpecificOfResult("t/a",START_PHASE,STAT_POWER));
+
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",START_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",MIDDLE_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",END_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",AVG_PHASE,STAT_RELATIVE));
+            tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",END_PHASE,STAT_RELATIVE)-resultSessionBWs[i].getSpecificOfResult("t/a",START_PHASE,STAT_RELATIVE));
+
+        //gΔ(A)|gΔ(r)|t+aΔ(A)|t+aΔ(r)|t/aΔ(A)|t/aΔ(r)
+        // Group printing..
+ /*       string tmpStr = "\n"+intToStr(i)+"|"+prefix;
+        tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",END_PHASE,STAT_POWER)-resultSessionBWs[i].getSpecificOfResult("gamma",START_PHASE,STAT_POWER));
+        tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("gamma",END_PHASE,STAT_RELATIVE)-resultSessionBWs[i].getSpecificOfResult("gamma",START_PHASE,STAT_RELATIVE));
+        tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",END_PHASE,STAT_POWER)-resultSessionBWs[i].getSpecificOfResult("t+a",START_PHASE,STAT_POWER));
+        tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t+a",END_PHASE,STAT_RELATIVE)-resultSessionBWs[i].getSpecificOfResult("t+a",START_PHASE,STAT_RELATIVE));
+        tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",END_PHASE,STAT_POWER)-resultSessionBWs[i].getSpecificOfResult("t/a",START_PHASE,STAT_POWER));
+        tmpStr += "|"+desToStr(resultSessionBWs[i].getSpecificOfResult("t/a",END_PHASE,STAT_RELATIVE)-resultSessionBWs[i].getSpecificOfResult("t/a",START_PHASE,STAT_RELATIVE));
+*/
+        if (resultSessions[i].trainingType==GAMMA_MEDITATION_TRAINING)
+            gammaStr += tmpStr;
+        if (resultSessions[i].trainingType==THETA_ALPHA_MEDITATION_TRAINING)
+            taStr += tmpStr;
+
+        resultStr += tmpStr;
+
+    }
+
+    // Combine
+    resultStr += "\n" + gammaStr + "\n" + taStr;
+
+    // Change all dots to , for helping later math processing in external programs ie libre office calc spread sheet.
+    replace( resultStr.begin(), resultStr.end(), '.', ',' );
+
+    // Yes u heard what I said.. save to file.. Cmon.. Save it..:)
+    std::ofstream out("renderComplex.txt");
+    out << resultStr;
+    out.close();
 
     /*
     START_PHASE,
@@ -110,6 +194,11 @@ void BWStatsView::refreshStatistic() {
     for (int i=0;i<statisticPoints[THETA_ALPHA_MEDITATION_TRAINING].size();i++)
         playerLog("found theta+alfa " + intToStr(i+1) + " with t+a value " + desToStr(statisticPoints[THETA_ALPHA_MEDITATION_TRAINING][i] ));
 
+   /* playerLog("------------------------ ");
+    playerLog("Gamma group g_g_sum " + desToStr(g_g_sum) + " g_ta_sum " + desToStr(g_ta_sum));
+    playerLog("Theta/Alfa -group ta_ta_sum " + desToStr(ta_ta_sum) + " ta_g_sum " + desToStr(ta_g_sum));
+    playerLog("------------------------ ");
+*/
 }
 
 bool BWStatsView::mouseInside() {

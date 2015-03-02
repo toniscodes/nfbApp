@@ -63,7 +63,7 @@ public:
     void analyzeStatistics();
     void clearStatistics();
     string getStatisticsStr();
-    double getRelativeSpecific(string inspected, int phase, int mode);
+    double getSpecificOfResult(string inspected, int phase, int mode);
 
     bool mouseInsideManager();
     bool mouseClickedInsideManager();
